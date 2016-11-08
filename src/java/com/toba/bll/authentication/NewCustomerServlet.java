@@ -1,24 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.toba.bll.authentication;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author brian_000
- */
-@WebServlet(urlPatterns = {"/Login"})
-public class LoginServlet extends HttpServlet {
-
+public class NewCustomerServlet extends HttpServlet
+{
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,16 +21,48 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-
-        if (username.equals("jsmith@toba.com") && password.equals("letmein"))
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String city = request.getParameter("city");
+        String state = request.getParameter("state");
+        String zipCode = request.getParameter("zipCode");
+        String email = request.getParameter("email");
+        
+        String validationMessage;
+        if (
+            firstName == null || firstName.isEmpty()
+            || lastName == null || lastName.isEmpty()
+            || phone == null || phone.isEmpty()
+            || address == null || address.isEmpty()
+            || city == null || city.isEmpty()
+            || state == null || state.isEmpty()
+            || zipCode == null || zipCode.isEmpty()
+            || email == null || email.isEmpty())
         {
-            response.sendRedirect("Account_activity.html");
+            validationMessage = "Please fill out all the form fields.";
+            request.setAttribute("validationMessage", validationMessage);
+            getServletContext().getRequestDispatcher("/New_customer.jsp").forward(request, response);
         }
         else
         {
-            response.sendRedirect("Login_failure.html");
+            User user = new User();
+            user.setUserName(lastName + zipCode);
+            user.setPassword("welcome1");
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setCity(city);
+            user.setState(state);
+            user.setZipCode(zipCode);
+            user.setEmail(email);
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
+            response.sendRedirect("Success.jsp");
         }
     }
 
@@ -81,5 +104,4 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

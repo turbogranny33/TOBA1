@@ -1,24 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.toba.bll.authentication;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author brian_000
- */
-@WebServlet(urlPatterns = {"/NewCustomer"})
-public class NewCustomerServlet extends HttpServlet {
-
+public class ResetPassword extends HttpServlet
+{
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,35 +20,17 @@ public class NewCustomerServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String firstName = request.getParameter("FirstName");
-        String lastName = request.getParameter("LastName");
-        String phone = request.getParameter("Phone");
-        String address = request.getParameter("Address");
-        String city = request.getParameter("City");
-        String state = request.getParameter("State");
-        String zipcode = request.getParameter("Zipcode");
-        String email = request.getParameter("Email");
-        
-        String validationMessage;
-        if (
-            firstName == null || firstName.isEmpty()
-            || lastName == null || lastName.isEmpty()
-            || phone == null || phone.isEmpty()
-            || address == null || address.isEmpty()
-            || city == null || city.isEmpty()
-            || state == null || state.isEmpty()
-            || zipcode == null || zipcode.isEmpty()
-            || email == null || email.isEmpty())
+            throws ServletException, IOException
+    {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        if (user != null)
         {
-            validationMessage = "Please fill out all the form fields.";
-            request.setAttribute("validationMessage", validationMessage);
-            getServletContext().getRequestDispatcher("/New_customer.html").forward(request, response);
+            user.setPassword(request.getParameter("password"));
+            session.setAttribute("user", user);
         }
-        else
-        {
-            response.sendRedirect("Success.html");
-        }
+
+        response.sendRedirect("Account_activity.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -98,5 +71,4 @@ public class NewCustomerServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

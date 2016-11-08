@@ -10,7 +10,11 @@
     </error-page>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>LoginServlet</servlet-class>
+        <servlet-class>com.toba.bll.authentication.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>com.toba.bll.authentication.ResetPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -18,7 +22,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>NewCustomerServlet</servlet-name>
-        <servlet-class>NewCustomerServlet</servlet-class>
+        <servlet-class>com.toba.bll.authentication.NewCustomerServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>NewCustomerServlet</servlet-name>
@@ -26,11 +30,15 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>TransactionServlet</servlet-name>
-        <servlet-class>TransactionServlet</servlet-class>
+        <servlet-class>com.toba.bll.transaction.TransactionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TransactionServlet</servlet-name>
         <url-pattern>/Transaction</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/ResetPassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
