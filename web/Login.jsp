@@ -11,6 +11,6 @@
     <input type="submit" value="Login" />
 </form>
 <p>
-    <a href="New_customer.jsp">New customer</a> |  <a href="password_reset.jsp">Reset password</a>
+    <a href="New_customer.jsp">New customer</a> | <a href="password_reset.jsp">Reset password</a>
 </p>
 <%@ include file="/includes/footer.jsp" %>

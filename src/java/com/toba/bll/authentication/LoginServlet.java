@@ -22,14 +22,22 @@ public class LoginServlet extends HttpServlet
             throws ServletException, IOException {
         String username = request.getParameter("userName");
         String password = request.getParameter("password");
-
-        if (username.equals("jsmith@toba.com") && password.equals("letmein"))
+        
+        User user = (User)request.getSession().getAttribute("user");
+        if (user != null)
         {
-            response.sendRedirect("Account_activity.jsp");
+            if (username.equals(user.getUserName()) && password.equals(user.getPassword()))
+            {
+                response.sendRedirect("Account_activity.jsp");
+            }
+            else
+            {
+                response.sendRedirect("Login_failure.jsp");
+            }
         }
         else
         {
-            response.sendRedirect("Login_failure.html");
+            response.sendRedirect("New_customer.jsp");
         }
     }
 
