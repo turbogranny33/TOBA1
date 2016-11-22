@@ -1,7 +1,8 @@
 package com.toba.bll.authentication;
 
+import com.toba.bll.database.UserDB;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class ResetPassword extends HttpServlet
         {
             user.setPassword(request.getParameter("password"));
             session.setAttribute("user", user);
+            UserDB.update(user);
         }
 
         response.sendRedirect("Account_activity.jsp");

@@ -1,11 +1,13 @@
 package com.toba.bll.authentication;
 
+import com.toba.bll.database.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class LoginServlet extends HttpServlet
 {
@@ -19,22 +21,30 @@ public class LoginServlet extends HttpServlet
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String username = request.getParameter("userName");
+            throws ServletException, IOException
+    {
+        String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         
-        User user = (User)request.getSession().getAttribute("user");
+        //User user = (User)request.getSession().getAttribute("user");
+        User user = UserDB.selectUser(userName);
         if (user != null)
         {
-            if (username.equals(user.getUserName()) && password.equals(user.getPassword()))
+            // login successful
+            if (/*userName.equals(user.getUserName()) && */password.equals(user.getPassword()))
             {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+
                 response.sendRedirect("Account_activity.jsp");
             }
+            // login failed
             else
             {
                 response.sendRedirect("Login_failure.jsp");
             }
         }
+        // user does not exist
         else
         {
             response.sendRedirect("New_customer.jsp");

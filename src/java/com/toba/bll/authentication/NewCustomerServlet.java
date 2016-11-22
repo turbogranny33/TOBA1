@@ -1,7 +1,9 @@
 package com.toba.bll.authentication;
 
+import com.toba.bll.database.AccountDB;
+import com.toba.bll.database.UserDB;
+import com.toba.bll.transaction.Account;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,8 @@ public class NewCustomerServlet extends HttpServlet
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String phone = request.getParameter("phone");
@@ -58,9 +61,17 @@ public class NewCustomerServlet extends HttpServlet
             user.setState(state);
             user.setZipCode(zipCode);
             user.setEmail(email);
-            
+
+            UserDB.insert(user);
+
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+            
+            // create accounts
+            Account savingsAccount = new Account("Savings", 25, user);
+            Account checkingAccount = new Account("Checking", 0, user);
+            AccountDB.insert(savingsAccount);
+            AccountDB.insert(checkingAccount);
 
             response.sendRedirect("Success.jsp");
         }
