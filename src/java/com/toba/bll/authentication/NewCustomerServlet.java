@@ -63,7 +63,7 @@ public class NewCustomerServlet extends HttpServlet
             user.setEmail(email);
 
             UserDB.insert(user);
-
+            
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             

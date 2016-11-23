@@ -1,10 +1,15 @@
 package com.toba.bll.transaction;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Transaction implements Serializable
@@ -12,8 +17,12 @@ public class Transaction implements Serializable
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long transactionId;
-    private Long accountId;
+    @JoinColumn(name = "AccountID")
+    @ManyToOne
+    private Account account;
     private double amount;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transactionDate;
     //private Long destinationAccountId;
     //private double sourceAccountBalance;
     //private double destinationAccountBalance;
@@ -21,10 +30,11 @@ public class Transaction implements Serializable
     public Transaction() {
     }
     
-    public Transaction(long accountId, double amount)
+    public Transaction(Account sourceAccount, double amount)
     {
         this.amount = amount;
-        this.accountId = accountId;
+        this.account = sourceAccount;
+        this.transactionDate = new Date();
     }
     
     public Long getTransactionId()
@@ -47,14 +57,23 @@ public class Transaction implements Serializable
         this.amount = amount;
     }    
 
-    public Long getAccountId()
+    public Account getAccount()
     {
-        return this.accountId;
+        return this.account;
     }
     
-    public void setAccountId(Long accountId)
+    public void setAccount(Account account)
     {
-        this.accountId = accountId;
+        this.account = account;
+    }
+    
+    public Date getTransactionDate()
+    {
+        return this.transactionDate;
+    }
+    
+    public void setTransactionDate(Date date) {
+        this.transactionDate = date;
     }
     
 /*    

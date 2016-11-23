@@ -40,8 +40,7 @@ CREATE TABLE Transaction (
 	TransactionID INT NOT NULL AUTO_INCREMENT,
 	AccountID INT NOT NULL,
     Amount DECIMAL(7,2) NOT NULL,
-    #SourceAccountBalance DECIMAL(7,2) NOT NULL,
-    #DestinationAccountBalance DECIMAL(7,2) NOT NULL,
+    TransactionDate DATETIME NOT NULL,
 
     PRIMARY KEY (TransactionID),
     FOREIGN KEY (AccountID) REFERENCES Account (AccountID)

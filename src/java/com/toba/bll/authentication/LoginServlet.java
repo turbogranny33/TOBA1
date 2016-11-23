@@ -1,8 +1,11 @@
 package com.toba.bll.authentication;
 
+import com.toba.bll.database.AccountDB;
 import com.toba.bll.database.UserDB;
+import com.toba.bll.transaction.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +36,11 @@ public class LoginServlet extends HttpServlet
             // login successful
             if (/*userName.equals(user.getUserName()) && */password.equals(user.getPassword()))
             {
+                List<Account> accounts = AccountDB.selectAccounts(user);
+
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
+                session.setAttribute("accounts", accounts);
 
                 response.sendRedirect("Account_activity.jsp");
             }

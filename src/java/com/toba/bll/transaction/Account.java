@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -17,7 +18,8 @@ public class Account implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long accountId;    
+    private Long accountId;
+    @JoinColumn(name = "UserID")
     @ManyToOne
     private User accountOwner;
     private String accountType;
@@ -74,6 +76,14 @@ public class Account implements Serializable
     public void setAccountType(String accountType)
     {
         this.accountType = accountType;
+    }
+    
+    public List<Transaction> getTransactions() {
+        return this.transactions;
+    }
+    
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
     
     public void credit(double amount) {

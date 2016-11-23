@@ -11,17 +11,17 @@ public class UserDB
     public static void insert(User user)
     {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+        EntityTransaction entityTransaction = em.getTransaction();
+        entityTransaction.begin();
         try
         {
             em.persist(user);
-            transaction.commit();
+            entityTransaction.commit();
         }
         catch (Exception e)
         {
             System.out.println(e);
-            transaction.rollback();
+            entityTransaction.rollback();
         }
         finally
         {
@@ -32,17 +32,17 @@ public class UserDB
     public static void update(User user)
     {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+        EntityTransaction entityTransaction = em.getTransaction();
+        entityTransaction.begin();
         try
         {
             em.merge(user);
-            transaction.commit();
+            entityTransaction.commit();
         }
         catch (Exception e)
         {
             System.out.println(e);
-            transaction.rollback();
+            entityTransaction.rollback();
         }
         finally
         {

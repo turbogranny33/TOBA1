@@ -1,5 +1,6 @@
 package com.toba.bll.database;
 
+import com.toba.bll.authentication.User;
 import com.toba.bll.transaction.Account;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -12,31 +13,75 @@ public class AccountDB
     public static void insert(Account account)
     {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
+        EntityTransaction entityTransaction = em.getTransaction();
+        entityTransaction.begin();
         try
         {
             em.persist(account);
-            transaction.commit();
+            entityTransaction.commit();
         }
         catch (Exception e)
         {
             System.out.println(e);
-            transaction.rollback();
+            entityTransaction.rollback();
         }
         finally
         {
             em.close();
         }
     }
-    
-    public static List<Account> selectAccounts(Long userId)
+
+    public static void update(Account account)
+    {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction entityTransaction = em.getTransaction();
+        entityTransaction.begin();
+        try
+        {
+            em.merge(account);
+            entityTransaction.commit();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+            entityTransaction.rollback();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    public static Account selectAccount(Long accountId)
     {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         String queryString =    "SELECT a FROM Account a " +
-                                "WHERE a.userID = :userId";
+                                "WHERE a.accountId = :accountId";
         TypedQuery<Account> query = em.createQuery(queryString, Account.class);
-        query.setParameter("userId", userId);
+        query.setParameter("accountId", accountId);
+
+        Account account = null;
+        try
+        {
+            account = query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            System.out.println(e);
+        }
+        finally
+        {
+            em.close();
+        }
+        return account;
+    }
+    
+    public static List<Account> selectAccounts(User user)
+    {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String queryString =    "SELECT a FROM Account a " +
+                                "WHERE a.accountOwner = :user";
+        TypedQuery<Account> query = em.createQuery(queryString, Account.class);
+        query.setParameter("user", user);
 
         List<Account> accounts = null;
         try
