@@ -13,5 +13,8 @@
     <li>
         <a href="Transaction.jsp">Post a transaction</a>
     </li>
+    <li>
+        <a href="admin/reports">Admin Reports</a>
+    </li>
 </ul>
 <%@ include file="/includes/footer.jsp" %>

@@ -1,6 +1,8 @@
 package com.toba.bll.database;
 
 import com.toba.bll.authentication.User;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -71,5 +73,33 @@ public class UserDB
             em.close();
         }
         return user;
+    }
+     
+    public static List<User> selectUsersRegisteredAfter(Date date)
+    {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String queryString =    "SELECT u FROM User u " +
+                                "WHERE u.registrationDate >= :date " +
+                                "ORDER BY u.registrationDate ASC";
+        TypedQuery<User> query = em.createQuery(queryString, User.class);
+        query.setParameter("date", date);
+
+        List<User> users = null;
+        try
+        {
+            users = query.getResultList();
+            if (users == null || users.isEmpty())
+            {
+                users = null;
+            }
+        }
+        catch (NoResultException e) {
+            System.out.println(e);
+        }
+        finally
+        {
+            em.close();
+        }
+        return users;
     }
 }

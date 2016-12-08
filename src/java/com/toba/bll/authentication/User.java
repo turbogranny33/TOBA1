@@ -1,10 +1,13 @@
 package com.toba.bll.authentication;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class User implements Serializable
@@ -22,6 +25,9 @@ public class User implements Serializable
     private String email;
     private String userName;
     private String password;
+    private String salt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registrationDate;
     
     public User()
     {
@@ -36,6 +42,8 @@ public class User implements Serializable
         email = "";
         userName = "";
         password = "";
+        salt = "";
+        registrationDate = new Date();
     }
 
     public Long getUserId()
@@ -146,5 +154,21 @@ public class User implements Serializable
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+    
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+    
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+    
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }

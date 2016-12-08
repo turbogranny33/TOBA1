@@ -2,6 +2,9 @@ package com.toba.bll.authentication;
 
 import com.toba.bll.database.UserDB;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +30,20 @@ public class ResetPassword extends HttpServlet
         User user = (User)session.getAttribute("user");
         if (user != null)
         {
-            user.setPassword(request.getParameter("password"));
-            session.setAttribute("user", user);
-            UserDB.update(user);
+            String password = request.getParameter("password");
+            String salt = user.getSalt();
+            String hashedAndSaltedPassword = null;
+            try {
+                hashedAndSaltedPassword = PasswordUtil.hashAndSaltPassword(password, salt);
+            } catch (NoSuchAlgorithmException ex) {
+                System.out.println(ex);
+            }
+            
+            if (hashedAndSaltedPassword != null) {
+                user.setPassword(hashedAndSaltedPassword);
+                UserDB.update(user);
+                session.setAttribute("user", user);
+            }
         }
 
         response.sendRedirect("Account_activity.jsp");

@@ -44,10 +44,6 @@
                 <th>Email Address</th>
                 <td>${sessionScope.user.email}</td>
             </tr>
-            <tr>
-                <th>Password</th>
-                <td>${sessionScope.user.password}</td>
-            </tr>
         </tbody>
     </table>
     <h2>Accounts</h2>
@@ -72,19 +68,19 @@
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Account</th>
+                <th>Source Account</th>
+                <th>Destination Account</th>
                 <th>Amount</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="account" items="${sessionScope.accounts}">
-                <c:forEach var="transaction" items="${account.transactions}">
-                    <tr>
-                        <td>${transaction.transactionDate}</td>
-                        <td>${account.accountType}</td>
-                        <td><fmt:formatNumber type="currency" currencySymbol="$" value="${transaction.amount}" /></td>
-                    </tr>
-                </c:forEach>
+            <c:forEach var="transaction" items="${sessionScope.transactions}">
+                <tr>
+                    <td>${transaction.transactionDate}</td>
+                    <td>${transaction.sourceAccount.accountType}</td>
+                    <td>${transaction.destinationAccount.accountType}</td>
+                    <td><fmt:formatNumber type="currency" currencySymbol="$" value="${transaction.amount}" /></td>
+                </tr>
             </c:forEach>
         </tbody>
     </table>

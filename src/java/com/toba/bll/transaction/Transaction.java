@@ -17,23 +17,27 @@ public class Transaction implements Serializable
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long transactionId;
-    @JoinColumn(name = "AccountID")
+
+    @JoinColumn(name = "SourceAccountID")
     @ManyToOne
-    private Account account;
+    private Account sourceAccount;
+
+    @JoinColumn(name = "DestinationAccountID")
+    @ManyToOne
+    private Account destinationAccount;
+    
     private double amount;
     @Temporal(TemporalType.TIMESTAMP)
     private Date transactionDate;
-    //private Long destinationAccountId;
-    //private double sourceAccountBalance;
-    //private double destinationAccountBalance;
 
     public Transaction() {
     }
     
-    public Transaction(Account sourceAccount, double amount)
+    public Transaction(Account sourceAccount, Account destinationAccount, double amount)
     {
         this.amount = amount;
-        this.account = sourceAccount;
+        this.sourceAccount = sourceAccount;
+        this.destinationAccount = destinationAccount;
         this.transactionDate = new Date();
     }
     
@@ -57,14 +61,24 @@ public class Transaction implements Serializable
         this.amount = amount;
     }    
 
-    public Account getAccount()
+    public Account getSourceAccount()
     {
-        return this.account;
+        return this.sourceAccount;
     }
     
-    public void setAccount(Account account)
+    public void setSourceAccount(Account sourceAccount)
     {
-        this.account = account;
+        this.sourceAccount = sourceAccount;
+    }
+
+    public Account getDestinationAccount()
+    {
+        return this.destinationAccount;
+    }
+    
+    public void setDestinationAccount(Account destinationAccount)
+    {
+        this.destinationAccount = destinationAccount;
     }
     
     public Date getTransactionDate()
@@ -75,36 +89,4 @@ public class Transaction implements Serializable
     public void setTransactionDate(Date date) {
         this.transactionDate = date;
     }
-    
-/*    
-    public Long getDestinationAccountId()
-    {
-        return this.destinationAccountId;
-    }
-    
-    public void setDestinationAccountId(Long destinationAccountId)
-    {
-        this.destinationAccountId = destinationAccountId;
-    }
-    
-    public double getSourceAccountBalance()
-    {
-        return this.sourceAccountBalance;
-    }
-    
-    public void setSourceAccountBalance(Long sourceAccountBalance)
-    {
-        this.sourceAccountBalance = sourceAccountBalance;
-    }
-    
-    public double getDestinationAccountBalance()
-    {
-        return this.destinationAccountBalance;
-    }
-    
-    public void setDestinationAccountBalance(Long destinationAccountBalance)
-    {
-        this.destinationAccountBalance = destinationAccountBalance;
-    }
-*/
 }

@@ -86,7 +86,7 @@ public class TransactionServlet extends HttpServlet
             if (amount <= sourceAccount.getBalance()) {
                 sourceAccount.debit(amount);
                 destinationAccount.credit(amount);
-                Transaction transaction = new Transaction(sourceAccount, amount);
+                Transaction transaction = new Transaction(sourceAccount, destinationAccount, amount);
                 
                 AccountDB.update(sourceAccount);
                 AccountDB.update(destinationAccount);
@@ -96,6 +96,8 @@ public class TransactionServlet extends HttpServlet
                 User user = (User)session.getAttribute("user");
                 List<Account> accounts = AccountDB.selectAccounts(user);
                 session.setAttribute("accounts", accounts);
+                List<Transaction> transactions = TransactionDB.selectTransactions(user);
+                session.setAttribute("transactions", transactions);
 
                 response.sendRedirect("Account_activity.jsp");
                 return;

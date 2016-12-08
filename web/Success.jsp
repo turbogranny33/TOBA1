@@ -6,7 +6,7 @@
 </div>
 <div>
     <label>Password</label>
-    <span>${user.password}</span>
+    <span>welcome1</span>
 </div>
 <div>
     <label>First Name</label>

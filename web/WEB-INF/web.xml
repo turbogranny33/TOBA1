@@ -8,6 +8,15 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/Error_java.jsp</location>
     </error-page>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.toba.filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <servlet-name>LoginServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.toba.bll.authentication.LoginServlet</servlet-class>
@@ -15,6 +24,14 @@
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
         <servlet-class>com.toba.bll.authentication.ResetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportsServlet</servlet-name>
+        <servlet-class>com.toba.bll.admin.ReportsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportsDownload</servlet-name>
+        <servlet-class>com.toba.bll.admin.ReportsDownloadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -40,9 +57,38 @@
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportsServlet</servlet-name>
+        <url-pattern>/admin/reports</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportsDownload</servlet-name>
+        <url-pattern>/admin/reports_download</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <security-role>
+        <description>Administrators</description>
+        <role-name>admin</role-name>
+    </security-role>
+    <security-constraint>
+        <display-name>Admin</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin Pages</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/admin/login.html</form-login-page>
+            <form-error-page>/admin/login_error.html</form-error-page>
+        </form-login-config>
+    </login-config>
 </web-app>

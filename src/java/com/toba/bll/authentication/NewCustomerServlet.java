@@ -4,6 +4,10 @@ import com.toba.bll.database.AccountDB;
 import com.toba.bll.database.UserDB;
 import com.toba.bll.transaction.Account;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +24,10 @@ public class NewCustomerServlet extends HttpServlet
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.security.NoSuchAlgorithmException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+            throws ServletException, IOException, NoSuchAlgorithmException
     {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -50,9 +55,14 @@ public class NewCustomerServlet extends HttpServlet
         }
         else
         {
+            String salt = PasswordUtil.getSalt();
+            String password = "welcome1";
+            String hashedAndSaltedPassword = PasswordUtil.hashAndSaltPassword(password, salt);
+            
             User user = new User();
             user.setUserName(lastName + zipCode);
-            user.setPassword("welcome1");
+            user.setPassword(hashedAndSaltedPassword);
+            user.setSalt(salt);
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setPhone(phone);
@@ -61,6 +71,7 @@ public class NewCustomerServlet extends HttpServlet
             user.setState(state);
             user.setZipCode(zipCode);
             user.setEmail(email);
+            user.setRegistrationDate(new Date());
 
             UserDB.insert(user);
             
@@ -89,7 +100,11 @@ public class NewCustomerServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(NewCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -103,7 +118,11 @@ public class NewCustomerServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(NewCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

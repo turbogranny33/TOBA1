@@ -15,4 +15,16 @@
         removeAbandonedTimeout="60"
         type="javax.sql.DataSource"
     />
+    
+    <Realm
+        className="org.apache.catalina.realm.DataSourceRealm"
+        debug="99"
+        dataSourceName="jdbc/toba"
+        localDataSource="true"
+        userTable="AdminUser"
+        userNameCol="UserName"
+        userCredCol="Password"
+        userRoleTable="UserRole"
+        roleNameCol="RoleName"
+    />
 </Context>
